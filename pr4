@@ -1,0 +1,48 @@
+Aggregate Functions and Grouping Use aggregate functions along with GROUP BY and HAVING clauses to retrieve summarized data from the database.
+
+CREATE TABLE Student_Result (Student_ID INT,Student_Name VARCHAR(50),Subject VARCHAR(30),Marks INT,Department VARCHAR(30));
+INSERT INTO Student_Result VALUES(1, 'Amit', 'DBMS', 78, 'Computer'),(2, 'Neha','DBMS', 85, 'Computer'),(3, 'Rahul', 'OS', 72, 'Computer'),(4, 'Sneha', 'OS', 88, 'IT'),(5, 'Pooja','DBMS', 91, 'IT'),(6, 'Ravi', 'OS', 65, 'IT');
+SELECT Department, COUNT(Student_ID) AS Total_Students FROM Student_Result GROUP BY Department;
+SELECT Subject, AVG(Marks) AS Avg_Marks FROM Student_Result GROUP BY Subject;
+SELECT Department,MAX(Marks) AS Highest_Marks,MIN(Marks) AS Lowest_Marks FROM Student_Result GROUP BY Department;
+SELECT Department, SUM(Marks) AS Total_Marks FROM Student_Result GROUP BY Department;
+SELECT Department, AVG(Marks) AS Avg_Marks FROM Student_Result GROUP BY Department HAVING AVG(Marks) > 80;
+SELECT Subject, COUNT(Student_ID) AS Student_Count FROM Student_Result GROUP BY Subject HAVING COUNT(Student_ID) > 2;
+SELECT Department, AVG(Marks) AS Avg_Marks FROM Student_Result WHERE Marks >= 70 GROUP BY Department HAVING AVG(Marks) > 75;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
