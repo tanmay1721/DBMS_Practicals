@@ -1,0 +1,17 @@
+Subqueries Write and execute subqueries to retrieve data from one table based on results from another 
+
+create database Sub;
+use Sub;
+create table Customer (cid int (20)Primary key,cname varchar (50),city varchar (50));
+create table Product (pid int (20)Primary key,pname varchar (50),price decimal(10,2));
+create table Orders (oid int (20) Primary key,cid int(20),pid int(20),quantity int(30),Foreign key(cid)references Customer(cid),Foreign key(pid)references Product(pid));
+INSERT INTO Customer VALUES (1, 'Amit', 'Pune'), (2, 'Neha', 'Mumbai'),(3, 'Rahul', 'Nagpur');
+INSERT INTO Product VALUES  (101, 'Laptop', 55000), (102, 'Mobile', 20000),  (103, 'Headphones', 2500);
+INSERT INTO Orders VALUES (1001, 1, 101, 1), (1002, 2, 102, 2), (1003, 1, 103, 3);
+Select cname from Customer where cid in (select cid from Orders);
+Select cname from Customer where cid not in (select cid from Orders);
+SELECT pname, price FROM Product WHERE price = (SELECT MAX(price) FROM Product);
+SELECT oid, (SELECT price FROM Product WHERE Product.pid = Orders.pid) * quantity AS total_amount FROM Orders;
+SELECT cid, total FROM (SELECT Orders.cid, SUM(Product.price * Orders.quantity) AS total FROM Orders JOIN Product ON Orders.pid = Product.pid GROUP BY Orders.cid) AS Purchase WHERE total > 30000;
+select pname,price from Product P where price>(select Avg(price)from Product where Product.pid=P.pid Or 1=1);
+select cname from Customer C where exists(select 1 from Orders O where O.cid=C.cid);
