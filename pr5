@@ -1,0 +1,27 @@
+5. JOIN Operations and Views Perform various types of JOIN operations to extract meaningful relationships between tables. Create and manage different database views. 
+
+
+create database design;
+use design;
+CREATE TABLE Customer (customer_id INT PRIMARY KEY,customer_name VARCHAR(50),city VARCHAR(30));
+CREATE TABLE Product (product_id INT PRIMARY KEY,product_name VARCHAR(50),price DECIMAL(10,2));
+CREATE TABLE Orders (order_id INT PRIMARY KEY,customer_id INT,product_id INT,quantity INT,FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),FOREIGN KEY (product_id) REFERENCES Product(product_id));
+INSERT INTO Customer VALUES(1, 'Amit', 'Pune'),(2, 'Neha', 'Mumbai'),(3, 'Rahul', 'Nagpur');
+INSERT INTO Product VALUES(101, 'Laptop', 55000),(102, 'Mobile', 20000),(103, 'Headphones', 2500);
+INSERT INTO Orders VALUES(1001, 1, 101, 1),(1002, 2, 102, 2),(1003, 1, 103, 3);
+SELECT customer_name, product_name, quantity FROM Orders INNER JOIN Customer ON Orders.customer_id = Customer.customer_id INNER JOIN Product ON Orders.product_id = Product.product_id;
+SELECT customer_name, order_id, product_name FROM Customer LEFT JOIN Orders ON Customer.customer_id = Orders.customer_id LEFT JOIN Product ON Orders.product_id = Product.product_id;
+SELECT product_name, customer_name FROM Orders RIGHT JOIN Product ON Orders.product_id = Product.product_id LEFT JOIN Customer ON Orders.customer_id = Customer.customer_id;
+SELECT customer_name, product_name FROM Customer FULL OUTER JOIN Orders ON Customer.customer_id = Orders.customer_id FULL OUTER JOIN Product ON Orders.product_id = Product.product_id;
+SELECT customer_name, product_name FROM Customer CROSS JOIN Product;
+SELECT A.customer_name AS Customer1, B.customer_name AS Customer2, A.city FROM Customer A JOIN Customer B ON A.city = B.city AND A.customer_id <> B.customer_id;
+CREATE VIEW Order_Details_View AS SELECT order_id, customer_name, product_name, quantity, price,(quantity * price) AS total_amount FROM Orders JOIN Customer ON Orders.customer_id = Customer.customer_id JOIN Product ON Orders.product_id = Product.product_id;
+show tables;
+SELECT * FROM Order_Details_View;
+desc Order_Details_View;
+CREATE VIEW Pune_Customers AS SELECT customer_name FROM Customer WHERE city = 'Pune';
+show tables;
+UPDATE Pune_Customers SET customer_name = 'Amit Kumar'WHERE customer_name = 'Amit';
+select * from Pune_Customers;
+DROP VIEW Order_Details_View;
+show tables;
