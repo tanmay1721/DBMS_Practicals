@@ -13,8 +13,8 @@ drop trigger if exists chk_salary;
  create trigger chk_salary
  -> before insert on emp
  -> for each row
- -> begin ->
- if NEW.salary <= 0 then
+ -> begin 
+ ->if NEW.salary <= 0 then
  -> signal sqlstate '45000'
  -> set message_text="Salary can not be negative and zero!";
  -> end if;
