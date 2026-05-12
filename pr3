@@ -1,0 +1,73 @@
+A)Insert Update Delete
+
+CREATE TABLE Book (Book_ID INT PRIMARY KEY,Book_Name VARCHAR(50),Author VARCHAR(50),Price INT,Category VARCHAR(30));
+CREATE TABLE Issued_Book (Book_Name VARCHAR(50));
+INSERT INTO Book VALUES(1, 'Database Systems', 'Navathe', 500, 'Education'),(2,'Operating System', 'Silberschatz', 650, 'Education'),(3, 'C Programming', 'Dennis Ritchie', 300,'Programming'),(4,'Python Basics', 'Guido', 400, 'Programming');
+show tables;
+select * from Book;
+UPDATE Book SET Price = Price + (Price * 0.10)WHERE Category = 'Programming';
+select * from Book;
+DELETE FROM Book WHERE Price < 350;
+select * from Book;
+SELECT Book_Name, Price, Price + 50 AS New_Price FROM Book;
+SELECT * FROM Book WHERE Category = 'Education' AND Price > 500;
+SELECT * FROM Book WHERE Book_Name LIKE 'D%';
+SELECT UPPER(Book_Name) AS Book_Upper,LOWER(Author) AS Author_Lower FROM Book;
+SELECT Book_Name, LENGTH(Book_Name) AS Name_Length FROM Book;
+SELECT SUBSTRING(Book_Name, 1, 4) AS Short_Name FROM Book;
+INSERT INTO Issued_Book VALUES ('Database Systems'), ('Python Basics');
+select * from Issued_Book;
+SELECT Book_Name FROM Book UNION SELECT Book_Name FROM Issued_Book;
+SELECT Book_Name FROM Book INTERSECT SELECT Book_Name FROM Issued_Book;
+SELECT Book_Name FROM Book EXCEPT SELECT Book_Name FROM Issued_Book;
+
+B)GRANT, REVOKE, and ROLE
+
+CREATE DATABASE college_db;
+USE college_db;
+CREATE TABLE student (roll_no INT PRIMARY KEY,name VARCHAR(50),marks INT);
+INSERT INTO student VALUES(1,'Amit',85),(2,'Neha',90),(3,'Ravi',78);
+select * from student;
+CREATE USER 'admin1'@'localhost' IDENTIFIED BY 'admin123';
+CREATE USER 'faculty1'@'localhost' IDENTIFIED BY 'faculty123';
+CREATE USER 'faculty1'@'localhost' IDENTIFIED BY 'faculty123';
+CREATE ROLE 'admin_role';
+CREATE ROLE 'faculty_role'
+CREATE ROLE 'student_role';
+GRANT ALL PRIVILEGES ON college_db.* TO 'admin_role';
+GRANT SELECT, UPDATE ON college_db.student TO 'faculty_role';
+GRANT SELECT ON college_db.student TO 'student_role';
+GRANT 'admin_role' TO 'admin1'@'localhost';
+GRANT 'faculty_role' TO 'faculty1'@'localhost';
+GRANT 'student_role' TO 'student1'@'localhost';
+SET DEFAULT ROLE ALL TO
+ -> 'admin1'@'localhost',
+ -> 'faculty1'@'localhost',
+ -> 'student1'@'localhost';
+SHOW GRANTS FOR 'faculty1'@'localhost'
+exit
+mysql -u student1 -p
+SELECT * FROM college_db.student;
+INSERT INTO college_db.student VALUES (4,'Pooja',88);
+REVOKE UPDATE ON college_db.student FROM 'faculty_role';
+SHOW GRANTS FOR 'faculty1'@'localhost';
+DROP ROLE 'student_role';
+DROP USER 'student1'@'localhost'
+
+C)START TRANSACTION, COMMIT, ROLLBACK,and SAVEPOINT
+
+create database Bank;
+use Bank;
+CREATE TABLE Account (Acc_No INT PRIMARY KEY,Acc_Holder VARCHAR(50),Balance INT)
+INSERT INTO Account VALUES(101, 'Amit Patil', 10000),(102, 'Neha Sharma', 15000);
+select * from Account;
+START TRANSACTION;
+UPDATE Account SET Balance = Balance - 2000 WHERE Acc_No = 101;
+UPDATE Account SET Balance = Balance + 2000 WHERE Acc_No = 102;
+SAVEPOINT transfer_done;
+select * from Account;
+UPDATE Account SET Balance = Balance - 5000 WHERE Acc_No = 101;
+ROLLBACK TO transfer_done;
+select * from Account;
+COMMIT;
+select * from Account;
