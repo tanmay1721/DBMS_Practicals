@@ -1,6 +1,6 @@
 5. JOIN Operations and Views Perform various types of JOIN operations to extract meaningful relationships between tables. Create and manage different database views. 
 
-
+ 
 create database design;
 use design;
 CREATE TABLE Customer (customer_id INT PRIMARY KEY,customer_name VARCHAR(50),city VARCHAR(30));
