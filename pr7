@@ -1,0 +1,28 @@
+Stored Procedures or Function with Cursors Create and execute stored procedures / function using cursors. 
+
+CREATE TABLE Emp1 (emp_id int,emp_name VARCHAR(50),salary int);
+INSERT INTO Emp1 VALUES (1, 'Ram', 50000);
+INSERT INTO Emp1 VALUES (2, 'Sham', 60000); 
+INSERT INTO Emp1 VALUES (3, 'Tom', 55000);
+DELIMITER //
+DROP PROCEDURE IF EXISTS show_employee_details //
+CREATE PROCEDURE show_employee_details() -> BEGIN
+->     DECLARE done INT DEFAULT 0;
+->     DECLARE v_id INT;
+->     DECLARE v_name VARCHAR(20);
+->     DECLARE v_salary INT;
+->     DECLARE emp_cursor CURSOR FOR
+->         SELECT emp_id,emp_name,salary from Emp1;
+->     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+->     OPEN emp_cursor;
+->     read_loop: LOOP
+->         FETCH emp_cursor INTO v_id, v_name, v_salary;
+->         IF done = 1 THEN
+->             LEAVE read_loop;
+->         END IF;
+->         SELECT v_id,v_name, v_salary;
+->     END LOOP;
+->     CLOSE emp_cursor;
+-> END // 
+ DELIMITER;
+ call show_employee_details();
